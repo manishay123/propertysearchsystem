@@ -67,27 +67,32 @@ public class UserController {
 
 
 	@PostMapping("/login")
-	public ResponseEntity<Object> createAuthorizationToken(@RequestBody AuthRequestDto authReq) throws AuthenticationException {
-		final Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-						authReq.getUsername(),
-						authReq.getPassword()
-				)
-		);
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+	public ResponseEntity<Object> createAuthorizationToken(@RequestBody AuthRequestDto authReq) throws AuthenticationException,LoginException {
+			try {
 
-		final UserDetails userDetails = userService.loadUserByUsername(authReq.getUsername());
+				final Authentication authentication = authenticationManager.authenticate(
+						new UsernamePasswordAuthenticationToken(
+								authReq.getUsername(),
+								authReq.getPassword()
+						)
+				);
 
-//		if (userDetails.getPassword().equals(authReq.getPassword())) {
-			return new ResponseEntity<>(
-					new AuthResponse(userDetails.getUsername(), jwtTokenUtil.generateToken(authentication),
-							jwtTokenUtil.getCurrentTime(), jwtTokenUtil.getExpirationTime()),
-					HttpStatus.OK);
-//		}
+				SecurityContextHolder.getContext().setAuthentication(authentication);
+
+				final UserDetails userDetails = userService.loadUserByUsername(authReq.getUsername());
 
 
+				return new ResponseEntity<>(
+						new AuthResponse(userDetails.getUsername(), jwtTokenUtil.generateToken(authentication),
+								jwtTokenUtil.getCurrentTime(), jwtTokenUtil.getExpirationTime()),
+						HttpStatus.OK);
 
-//		throw new LoginException("Invalid Username or Password");
+
+			}catch (Exception e){
+				throw new LoginException("Invalid Username or Password");
+			}
+
+
 	}
 
 	@GetMapping(path = "/validate")
