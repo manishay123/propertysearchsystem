@@ -11,6 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +33,9 @@ public class UserController {
 	private JwtUtil jwtTokenUtil;
 	@Autowired
 	ValidateStatusDto validateStatus;
+
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
 	    @GetMapping("/welcome")
 	    public String welcome() {
@@ -59,18 +67,27 @@ public class UserController {
 
 
 	@PostMapping("/login")
-	public ResponseEntity<Object> createAuthorizationToken(@RequestBody AuthRequestDto authReq) throws LoginException {
+	public ResponseEntity<Object> createAuthorizationToken(@RequestBody AuthRequestDto authReq) throws AuthenticationException {
+		final Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(
+						authReq.getUsername(),
+						authReq.getPassword()
+				)
+		);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 
 		final UserDetails userDetails = userService.loadUserByUsername(authReq.getUsername());
 
-		if (userDetails.getPassword().equals(authReq.getPassword())) {
+//		if (userDetails.getPassword().equals(authReq.getPassword())) {
 			return new ResponseEntity<>(
-					new AuthResponse(userDetails.getUsername(), jwtTokenUtil.generateToken(userDetails),
+					new AuthResponse(userDetails.getUsername(), jwtTokenUtil.generateToken(authentication),
 							jwtTokenUtil.getCurrentTime(), jwtTokenUtil.getExpirationTime()),
 					HttpStatus.OK);
-		}
+//		}
 
-		throw new LoginException("Invalid Username or Password");
+
+
+//		throw new LoginException("Invalid Username or Password");
 	}
 
 	@GetMapping(path = "/validate")

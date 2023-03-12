@@ -5,6 +5,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -52,12 +53,12 @@ public class JwtUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(Authentication authentication) {
         log.info("BEGIN - [generateToken(userDetails)]");
         Map<String, Object> claims = new HashMap<>();
         log.debug("CLaims" + claims);
         log.info("END - [generateToken(userDetails)]");
-        return createToken(claims, userDetails.getUsername());
+        return createToken(claims, authentication.getName());
     }
 
     private String createToken(Map<String, Object> claims, String subject) {
