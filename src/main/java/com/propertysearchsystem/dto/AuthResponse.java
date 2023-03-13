@@ -1,6 +1,7 @@
 package com.propertysearchsystem.dto;
 
 
+import com.propertysearchsystem.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthResponse {
 
-    private String username;
+    private User user;
     private String jwtAuthToken;
 
     private long serverCurrentTime;

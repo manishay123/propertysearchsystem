@@ -6,6 +6,7 @@ import com.propertysearchsystem.dto.AuthRequestDto;
 import com.propertysearchsystem.dto.AuthResponse;
 import com.propertysearchsystem.dto.ValidateStatusDto;
 import com.propertysearchsystem.excpetion.LoginException;
+import com.propertysearchsystem.repository.UserRepository;
 import com.propertysearchsystem.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,8 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	UserRepository userRepository;
 	@Autowired
 	private JwtUtil jwtTokenUtil;
 	@Autowired
@@ -65,6 +68,18 @@ public class UserController {
 
 
 
+	@GetMapping({"/forAdmin"})
+	@PreAuthorize("hasRole('Admin')")
+	public String forAdmin(){
+		return "This URL is only accessible to the admin";
+	}
+
+	@GetMapping({"/forUser"})
+	@PreAuthorize("hasRole('User')")
+	public String forUser(){
+		return "This URL is only accessible to the user";
+	}
+
 
 	@PostMapping("/login")
 	public ResponseEntity<Object> createAuthorizationToken(@RequestBody AuthRequestDto authReq) throws AuthenticationException,LoginException {
@@ -80,10 +95,9 @@ public class UserController {
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 
 				final UserDetails userDetails = userService.loadUserByUsername(authReq.getUsername());
-
-
+				User user = userRepository.findByUserName(userDetails.getUsername()).get();
 				return new ResponseEntity<>(
-						new AuthResponse(userDetails.getUsername(), jwtTokenUtil.generateToken(authentication),
+						new AuthResponse(user, jwtTokenUtil.generateToken(authentication),
 								jwtTokenUtil.getCurrentTime(), jwtTokenUtil.getExpirationTime()),
 						HttpStatus.OK);
 
