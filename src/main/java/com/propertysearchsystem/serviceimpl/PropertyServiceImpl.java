@@ -1,6 +1,7 @@
 package com.propertysearchsystem.serviceimpl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,18 +15,8 @@ import com.propertysearchsystem.service.PropertyService;
 public class PropertyServiceImpl implements PropertyService {
 	
 
-	private PropDetailsRepo propDetailsRepo;
-
-	public PropertyServiceImpl(PropDetailsRepo propDetailsRepo) {
-		super();
-		this.propDetailsRepo = propDetailsRepo;
-	}
-
-	@Override
-	public PropertyInfo createNewProperty(PropertyInfo propertyInfo) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	@Autowired
+	PropDetailsRepo propDetailsRepo;
 
 	@Override
 	public PropertyDetails addProperty(PropertyDetails propertyDetails) {
@@ -35,16 +26,28 @@ public class PropertyServiceImpl implements PropertyService {
 
 	@Override
 	public PropertyDetails updateproperty(PropertyDetails propertyDetails, long id) {
-		// TODO Auto-generated method stub
-		return null;
+		PropertyDetails pro = propDetailsRepo.findById(id).get();
+		return propDetailsRepo.save(propertyDetails) ;
 	}
 
 	@Override
-	public PropertyDetails deleteProperty(PropertyDetails propertyDetails, long id) {
+	public PropertyDetails deleteProperty( long id) {
 		// TODO Auto-generated method stub
-		return null;
+		PropertyDetails pro = propDetailsRepo.findById(id).get();
+		propDetailsRepo.deleteById(id);
+		return pro;
 	}
 
-	
+	@Override
+	public PropertyDetails viewProperty(long id) {
+		return propDetailsRepo.findById(id).get();
+	}
+
+	@Override
+	public List<PropertyDetails> searchProperty(String key) {
+		List<PropertyDetails> propertyDetails = propDetailsRepo.findAll();
+		return propertyDetails.stream().filter(p->  p.getAddress().equals(key)||p.getType().equals(key) ).collect(Collectors.toList()) ;
+	}
+
 
 }

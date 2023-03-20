@@ -1,5 +1,6 @@
 package com.propertysearchsystem.serviceimpl;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +11,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.propertysearchsystem.model.User;
@@ -23,7 +26,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
 	UserRepository userRepository;
-
+	int strength = 10;
+	BCryptPasswordEncoder bCryptPasswordEncoder =
+			new BCryptPasswordEncoder(strength, new SecureRandom());
 
 	@Override
 	public User updateUser(User user, int userId) {
@@ -38,6 +43,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		List<User> users = new ArrayList<User>();
 		userRepository.findAll().forEach(e -> users.add(e));
 		return users;
+	}
+
+	@Override
+	public User createUser(User user) {
+		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		user.setRoleName("User");
+		return userRepository.save(user);
 	}
 
 	@Override

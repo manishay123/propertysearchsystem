@@ -10,7 +10,7 @@ public interface UserService {
 
 	
 	List<User> getAllUsers();
-	//String createUser(User user);
+	User createUser(User user);
     User updateUser(User user, int userId);
 
 	UserDetails loadUserByUsername(String userName);

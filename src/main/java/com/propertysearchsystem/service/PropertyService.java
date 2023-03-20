@@ -9,9 +9,11 @@ import com.propertysearchsystem.model.PropertyDetails;
 
 
 public interface PropertyService {
-PropertyInfo createNewProperty(PropertyInfo propertyInfo);
+
 PropertyDetails addProperty(PropertyDetails propertyDetails);
 PropertyDetails updateproperty(PropertyDetails propertyDetails, long id);
-PropertyDetails deleteProperty(PropertyDetails propertyDetails, long id);
-//List<PropertyDetails> searchProperty(String address, String type); 
+PropertyDetails deleteProperty( long id);
+PropertyDetails viewProperty( long id);
+
+List<PropertyDetails> searchProperty(String key);
 }
