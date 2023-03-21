@@ -66,7 +66,7 @@ public class JwtUtil {
         log.info("END - [createToken()]");
 
         setCurrentTime(System.currentTimeMillis());
-        setExpirationTime(getCurrentTime() + 1000 * 60 * 15);
+        setExpirationTime(getCurrentTime() + 1000 * 60 * 30);
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(getExpirationTime()))

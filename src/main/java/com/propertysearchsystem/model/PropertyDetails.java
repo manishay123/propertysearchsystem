@@ -1,14 +1,13 @@
 package com.propertysearchsystem.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 
 @AllArgsConstructor
@@ -16,14 +15,19 @@ import javax.persistence.Id;
 @Getter
 @Setter
 @Entity
+
 public class PropertyDetails {
 @Id
 @GeneratedValue(strategy = GenerationType.IDENTITY)
-private long pid;	
+private long id;
 private String address;
 private String type;
 private String description;
-private String taxAmount;
+private float taxAmount;
 private boolean taxStatus;
+    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "propertyOwnerId")
+    @JsonManagedReference
+    private PropertyOwner propertyOwner;
 
 }

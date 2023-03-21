@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.propertysearchsystem.dto.AuthRequestDto;
 import com.propertysearchsystem.dto.AuthResponse;
+import com.propertysearchsystem.dto.UserResponseDTO;
 import com.propertysearchsystem.dto.ValidateStatusDto;
 import com.propertysearchsystem.excpetion.LoginException;
 import com.propertysearchsystem.repository.UserRepository;
 import com.propertysearchsystem.util.JwtUtil;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,11 +26,12 @@ import com.propertysearchsystem.model.User;
 import com.propertysearchsystem.service.UserService;
 
 @RestController
-@RequestMapping()
 public class UserController {
 	@Autowired
 	UserService userService;
 
+	@Autowired
+	private ModelMapper modelMapper;
 	@Autowired
 	UserRepository userRepository;
 	@Autowired
@@ -64,7 +67,6 @@ public class UserController {
 
 	@PutMapping("/update/{id}")
 	private User updateUser(@PathVariable int userId, @RequestBody User user) {
-
 		return userService.updateUser(user, userId);
 	}
 
@@ -88,8 +90,9 @@ public class UserController {
 
 			final UserDetails userDetails = userService.loadUserByUsername(authReq.getUsername());
 			User user = userRepository.findByUserName(userDetails.getUsername()).get();
+
 			return new ResponseEntity<>(
-					new AuthResponse(user, jwtTokenUtil.generateToken(authentication),
+					new AuthResponse(new UserResponseDTO(user.getUserId(),user.getUserName(),user.getRoleName()), jwtTokenUtil.generateToken(authentication),
 							jwtTokenUtil.getCurrentTime(), jwtTokenUtil.getExpirationTime()),
 					HttpStatus.OK);
 

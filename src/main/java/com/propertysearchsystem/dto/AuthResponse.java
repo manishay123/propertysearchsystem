@@ -9,7 +9,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class AuthResponse {
 
-    private User user;
+    private UserResponseDTO user;
     private String jwtAuthToken;
 
     private long serverCurrentTime;

@@ -1,12 +1,12 @@
 package com.propertysearchsystem.serviceimpl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.propertysearchsystem.dto.PropertyInfo;
 import com.propertysearchsystem.model.PropertyDetails;
 import com.propertysearchsystem.repository.PropDetailsRepo;
 import com.propertysearchsystem.service.PropertyService;
@@ -21,12 +21,22 @@ public class PropertyServiceImpl implements PropertyService {
 	@Override
 	public PropertyDetails addProperty(PropertyDetails propertyDetails) {
 		// TODO Auto-generated method stub
+
 		return propDetailsRepo.save(propertyDetails);
 	}
 
 	@Override
-	public PropertyDetails updateproperty(PropertyDetails propertyDetails, long id) {
+	public List<PropertyDetails> getAllProperty() {
+		List<PropertyDetails> propertyDetails = new ArrayList<>();
+		propDetailsRepo.findAll().forEach( e-> propertyDetails.add(e) );
+		return propertyDetails;
+	}
+
+	@Override
+	public PropertyDetails updateProperty(PropertyDetails propertyDetails, long id) {
 		PropertyDetails pro = propDetailsRepo.findById(id).get();
+		propertyDetails.setId(pro.getId());
+		propertyDetails.getPropertyOwner().setId(pro.getPropertyOwner().getId());
 		return propDetailsRepo.save(propertyDetails) ;
 	}
 
@@ -46,7 +56,8 @@ public class PropertyServiceImpl implements PropertyService {
 	@Override
 	public List<PropertyDetails> searchProperty(String key) {
 		List<PropertyDetails> propertyDetails = propDetailsRepo.findAll();
-		return propertyDetails.stream().filter(p->  p.getAddress().equals(key)||p.getType().equals(key) ).collect(Collectors.toList()) ;
+		return propertyDetails.stream().filter(p->  p.getAddress().equals(key)||p.getType().equals(key)
+				||p.getPropertyOwner().getFirstName().equals(key)||p.getPropertyOwner().getLastName().equals(key) ).collect(Collectors.toList()) ;
 	}
 
 
