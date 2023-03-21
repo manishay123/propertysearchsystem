@@ -1,6 +1,6 @@
 package com.propertysearchsystem.controller;
 
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +17,7 @@ public class PropertyController {
 
 	@Autowired
 	private PropertyService propertyService;
-	@Autowired
-	private ModelMapper modelMapper;
+
 	@PreAuthorize("hasRole('User') || hasRole('Admin')")
 	@GetMapping("/property")
 	public ResponseEntity<List<PropertyDetails>> getAllProperty() {

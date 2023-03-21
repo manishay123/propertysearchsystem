@@ -9,7 +9,7 @@ import com.propertysearchsystem.dto.ValidateStatusDto;
 import com.propertysearchsystem.excpetion.LoginException;
 import com.propertysearchsystem.repository.UserRepository;
 import com.propertysearchsystem.util.JwtUtil;
-import org.modelmapper.ModelMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +30,6 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@Autowired
-	private ModelMapper modelMapper;
 	@Autowired
 	UserRepository userRepository;
 	@Autowired

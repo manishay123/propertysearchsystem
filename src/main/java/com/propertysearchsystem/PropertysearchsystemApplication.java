@@ -15,7 +15,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.Arrays;
 import java.util.List;
-import org.modelmapper.ModelMapper;
 @SpringBootApplication
 @EnableSwagger2
 public class PropertysearchsystemApplication {
@@ -48,9 +47,5 @@ public class PropertysearchsystemApplication {
 	}
 
 
-	@Bean
-	public ModelMapper modelMapper() {
-		return new ModelMapper();
-	}
 
 }
