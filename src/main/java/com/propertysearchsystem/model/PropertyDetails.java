@@ -25,7 +25,7 @@ private String type;
 private String description;
 private float taxAmount;
 private boolean taxStatus;
-    @OneToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "propertyOwnerId")
     @JsonManagedReference
     private PropertyOwner propertyOwner;

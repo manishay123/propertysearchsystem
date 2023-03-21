@@ -21,7 +21,7 @@ public class PropertyOwner {
 private long id;
 private String firstName;
 private String lastName;
-@OneToOne(cascade = CascadeType.ALL, mappedBy = "propertyOwner",fetch = FetchType.LAZY)
+@OneToOne(cascade = CascadeType.ALL, mappedBy = "propertyOwner")
 @JsonBackReference
 private  PropertyDetails propertyDetails;
 
