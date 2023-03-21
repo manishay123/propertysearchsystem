@@ -1,6 +1,7 @@
 package com.propertysearchsystem.controller;
 
 
+import com.propertysearchsystem.dto.SearchRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +45,13 @@ public class PropertyController {
 	@PreAuthorize("hasRole('User') || hasRole('Admin')")
 	@PostMapping("/searchProperty/{key}")
 	public ResponseEntity<List<PropertyDetails>> searchProperty(@PathVariable String key) {
-
 		return new ResponseEntity<List<PropertyDetails>>(propertyService.searchProperty(key), HttpStatus.OK);
+	}
+
+	@PreAuthorize("hasRole('User') || hasRole('Admin')")
+	@PostMapping("/searchPropertyWithField/")
+	public ResponseEntity<List<PropertyDetails>> searchPropertyWithFields(@RequestBody SearchRequestDTO searchRequestDTO) {
+		return new ResponseEntity<List<PropertyDetails>>(propertyService.searchPropertyWithProperty(searchRequestDTO), HttpStatus.OK);
 	}
 
 }

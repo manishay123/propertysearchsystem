@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.propertysearchsystem.dto.SearchRequestDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,6 +59,13 @@ public class PropertyServiceImpl implements PropertyService {
 		List<PropertyDetails> propertyDetails = propDetailsRepo.findAll();
 		return propertyDetails.stream().filter(p->  p.getAddress().equals(key)||p.getType().equals(key)
 				||p.getPropertyOwner().getFirstName().equals(key)||p.getPropertyOwner().getLastName().equals(key) ).collect(Collectors.toList()) ;
+	}
+
+	@Override
+	public List<PropertyDetails> searchPropertyWithProperty(SearchRequestDTO searchRequestDTO) {
+		List<PropertyDetails> propertyDetails = propDetailsRepo.findAll();
+		return propertyDetails.stream().filter(p->  p.getAddress().equals(searchRequestDTO.getAddress())||p.getType().equals(searchRequestDTO.getPropertyType())
+				||p.getPropertyOwner().getFirstName().equals(searchRequestDTO.getFirstName())||p.getPropertyOwner().getLastName().equals(searchRequestDTO.getLastName()) ).collect(Collectors.toList()) ;
 	}
 
 
