@@ -58,7 +58,10 @@ public class PropertyServiceImpl implements PropertyService {
 	public List<PropertyDetails> searchProperty(String key) {
 		List<PropertyDetails> propertyDetails = new ArrayList<>();
 		propDetailsRepo.findAll().forEach( e-> propertyDetails.add(e) );
-		return propertyDetails.stream().filter(p->  p.getPropertyOwner().getFirstName().equals(key)||p.getPropertyOwner().getLastName().equals(key) ).collect(Collectors.toList()) ;
+		return propertyDetails.stream().filter(p->  p.getPropertyOwner().getFirstName().toLowerCase().equals(key.toLowerCase())
+						||p.getPropertyOwner().getLastName().toLowerCase().equals(key.toLowerCase())||
+						p.getAddress().toLowerCase().equals(key.toLowerCase())|| p.getType().toLowerCase().equals(key.toLowerCase())  )
+				.collect(Collectors.toList()) ;
 	}
 
 	@Override
