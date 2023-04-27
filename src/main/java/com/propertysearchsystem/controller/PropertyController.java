@@ -14,6 +14,7 @@ import com.propertysearchsystem.service.PropertyService;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class PropertyController {
 
 	@Autowired

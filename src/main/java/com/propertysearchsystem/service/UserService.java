@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.propertysearchsystem.excpetion.CustomMessageException;
 import com.propertysearchsystem.model.User;
 
 public interface UserService {

@@ -46,10 +46,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User createUser(User user) {
-		user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		user.setRoleName("User");
-		return userRepository.save(user);
+	public User createUser(User user) throws UsernameNotFoundException  {
+		
+		if (userRepository.findByUserName(user.getUserName()).isPresent()) {
+			throw new UsernameNotFoundException("User not found!!");
+		}else {
+			user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+			user.setRoleName("User");
+			return userRepository.save(user);
+		}
+
+		
+		
 	}
 
 	@Override
