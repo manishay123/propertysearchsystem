@@ -1,6 +1,6 @@
 package com.propertysearchsystem.excpetion;
 
-public class CustomMessageException extends Exception {
+public class CustomMessageException extends RuntimeException {
 	
 	  /**
 	 * 

@@ -38,6 +38,15 @@ public class PropertyController {
 
 		return new ResponseEntity<PropertyDetails>(propertyService.updateProperty(propertyDetails,id), HttpStatus.OK);
 	}
+	
+	@PreAuthorize("hasRole('Admin')")
+	@DeleteMapping("/property/{id}")
+	public ResponseEntity<PropertyDetails> deleteProperty(@PathVariable long id) {
+
+		return new ResponseEntity<PropertyDetails>(propertyService.deleteProperty(id), HttpStatus.OK);
+	}
+	
+	
 	@PreAuthorize("hasRole('User') || hasRole('Admin')")
 	@GetMapping("/property/{id}")
 	public ResponseEntity<PropertyDetails> viewProperty(@PathVariable long id) {
@@ -56,3 +65,4 @@ public class PropertyController {
 	}
 
 }
+

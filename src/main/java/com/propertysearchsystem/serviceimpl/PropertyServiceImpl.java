@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.propertysearchsystem.dto.SearchRequestDTO;
+import com.propertysearchsystem.excpetion.CustomMessageException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -42,11 +44,16 @@ public class PropertyServiceImpl implements PropertyService {
 	}
 
 	@Override
-	public PropertyDetails deleteProperty( long id) {
+	public PropertyDetails deleteProperty( long id) throws CustomMessageException {
 		// TODO Auto-generated method stub
 		PropertyDetails pro = propDetailsRepo.findById(id).get();
-		propDetailsRepo.deleteById(id);
-		return pro;
+		if(pro == null) {
+		 throw new CustomMessageException("Property not found for this id.");
+		}else {
+			propDetailsRepo.deleteById(id);
+			return pro;
+		}
+	
 	}
 
 	@Override
