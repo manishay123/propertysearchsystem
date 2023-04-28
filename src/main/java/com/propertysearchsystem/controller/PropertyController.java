@@ -59,7 +59,7 @@ public class PropertyController {
 	}
 
 	@PreAuthorize("hasRole('User') || hasRole('Admin')")
-	@PostMapping("/searchPropertyWithField/")
+	@PostMapping("/searchPropertyWithField")
 	public ResponseEntity<List<PropertyDetails>> searchPropertyWithFields(@RequestBody SearchRequestDTO searchRequestDTO) {
 		return new ResponseEntity<List<PropertyDetails>>(propertyService.searchPropertyWithProperty(searchRequestDTO), HttpStatus.OK);
 	}
