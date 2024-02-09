@@ -14,7 +14,6 @@ import com.propertysearchsystem.service.PropertyService;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 public class PropertyController {
 
 	@Autowired
@@ -38,15 +37,6 @@ public class PropertyController {
 
 		return new ResponseEntity<PropertyDetails>(propertyService.updateProperty(propertyDetails,id), HttpStatus.OK);
 	}
-	
-	@PreAuthorize("hasRole('Admin')")
-	@DeleteMapping("/property/{id}")
-	public ResponseEntity<PropertyDetails> deleteProperty(@PathVariable long id) {
-
-		return new ResponseEntity<PropertyDetails>(propertyService.deleteProperty(id), HttpStatus.OK);
-	}
-	
-	
 	@PreAuthorize("hasRole('User') || hasRole('Admin')")
 	@GetMapping("/property/{id}")
 	public ResponseEntity<PropertyDetails> viewProperty(@PathVariable long id) {
@@ -59,10 +49,9 @@ public class PropertyController {
 	}
 
 	@PreAuthorize("hasRole('User') || hasRole('Admin')")
-	@PostMapping("/searchPropertyWithField")
+	@PostMapping("/searchPropertyWithField/")
 	public ResponseEntity<List<PropertyDetails>> searchPropertyWithFields(@RequestBody SearchRequestDTO searchRequestDTO) {
 		return new ResponseEntity<List<PropertyDetails>>(propertyService.searchPropertyWithProperty(searchRequestDTO), HttpStatus.OK);
 	}
 
 }
-

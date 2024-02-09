@@ -26,7 +26,6 @@ import com.propertysearchsystem.model.User;
 import com.propertysearchsystem.service.UserService;
 
 @RestController
-@CrossOrigin
 public class UserController {
 	@Autowired
 	UserService userService;
@@ -59,7 +58,7 @@ public class UserController {
 	}
 
 	@PostMapping("/createUser")
-	 public ResponseEntity<User> createUser(@RequestBody User user)  {
+	 public ResponseEntity<User> createUser(@RequestBody User user) {
 	 return new ResponseEntity<User>(userService.createUser(user), HttpStatus.CREATED);
 	 }
 
