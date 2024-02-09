@@ -6,8 +6,8 @@
 trigger:
 - main
 
-pool:
-  vmImage: default
+pool: my-agent
+ 
 
 steps:
 - task: Maven@3
