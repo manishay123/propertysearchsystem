@@ -25,6 +25,7 @@ public class PropertyController {
 		return new ResponseEntity<List<PropertyDetails>>(propertyService.getAllProperty(), HttpStatus.OK);
 	}
 
+
 	@PreAuthorize("hasRole('Admin')")
 	@PostMapping("/property")
 	public ResponseEntity<PropertyDetails> addProperty(@RequestBody PropertyDetails propertyDetails) {
